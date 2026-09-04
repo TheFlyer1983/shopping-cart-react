@@ -1,18 +1,13 @@
 import { useState, useEffect } from 'react';
-import type { Dispatch } from 'react';
 import { Link } from 'react-router';
 import ProductCard from '../components/ProductCard';
-import type { CartAction } from '../reducers/cartReducer';
 
 import type { Product } from '../types/product';
+import { useCart } from '../hooks/useCart';
 
-type ProductsProps = {
-  dispatch: Dispatch<CartAction>;
-}
-
-export default function Products({ dispatch }: ProductsProps) {
+export default function Products() {
   const [products, setProducts] = useState<Product[]>([]);
-
+  const { dispatch, cart } = useCart();
   useEffect(() => {
     async function fetchProducts() {
       try {
@@ -28,10 +23,8 @@ export default function Products({ dispatch }: ProductsProps) {
     fetchProducts();
   }, []);
 
-  
-
   function addToCart(product: Product) {
-    dispatch({type: 'ADD_TO_CART', product})
+    dispatch({ type: 'ADD_TO_CART', product });
   }
 
   return (
@@ -47,11 +40,11 @@ export default function Products({ dispatch }: ProductsProps) {
       </div>
       <div className="grid list-none grid-cols-1 gap-6 p-0 sm:grid-cols-2 lg:grid-cols-3">
         {products.map((product) => (
-          <div key={product.id} className="flex flex-col overflow-hidden rounded-xl border border-(--border) bg-(--bg) transition-shadow duration-300 hover:shadow-(--shadow)">
-          <ProductCard
-              product={product}
-              addToCart={addToCart}
-          />
+          <div
+            key={product.id}
+            className="flex flex-col overflow-hidden rounded-xl border border-(--border) bg-(--bg) transition-shadow duration-300 hover:shadow-(--shadow)"
+          >
+            <ProductCard product={product} addToCart={addToCart} />
           </div>
         ))}
       </div>

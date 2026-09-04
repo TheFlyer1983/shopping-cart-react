@@ -1,18 +1,9 @@
-import { useEffect } from 'react';
-import type { Dispatch } from 'react';
 import { Link } from 'react-router';
-import type { CartState, CartAction } from '../reducers/cartReducer';
 import type { Product } from '../types/product';
+import { useCart } from '../hooks/useCart';
 
-type CartProps = {
-  cart: CartState;
-  dispatch: Dispatch<CartAction>;
-};
-
-export default function Cart({ cart, dispatch }: CartProps) {
-  useEffect(() => {
-    console.log(cart);
-  }, [cart]);
+export default function Cart() {
+  const { cart, dispatch } = useCart();
 
   function removeFromCart(productId: Product['id']) {
     dispatch({ type: 'REMOVE_FROM_CART', productId });
@@ -134,8 +125,8 @@ export default function Cart({ cart, dispatch }: CartProps) {
           <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-(--border) pt-6">
             <button
               type="button"
-                className="cursor-pointer rounded-md border-2 border-transparent px-3 py-1.5 text-sm transition-colors duration-300 hover:border-(--border) hover:text-(--text-h) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent)"
-                onClick={() => dispatch({ type: 'CLEAR_CART' })}
+              className="cursor-pointer rounded-md border-2 border-transparent px-3 py-1.5 text-sm transition-colors duration-300 hover:border-(--border) hover:text-(--text-h) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent)"
+              onClick={() => dispatch({ type: 'CLEAR_CART' })}
             >
               Clear Cart
             </button>
